@@ -4,14 +4,14 @@ public class ConflictTest
 {
     [Theory()]
     [InlineData(2000000)]
-    public async Task NoConflicts(int iterations)
+    public void NoConflicts(int iterations)
     {
         Dictionary<string, Guid> results = new Dictionary<string, Guid>();
 
         for (int i = 0; i < iterations; i++)
         {
             string randomString = Path.GetRandomFileName();
-            results.TryAdd(randomString, await StringToGuid.Instance.GetGuidAsync(randomString, default).ConfigureAwait(false));
+            results.TryAdd(randomString, StringToGuid.Instance.GetGuid(randomString));
         }
 
         int itemCount = results.Count;

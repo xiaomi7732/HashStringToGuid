@@ -8,14 +8,27 @@ namespace HashStringToGuid;
 /// </summary>
 public sealed class StringToGuid
 {
+    private Func<byte[], byte[]>? _customHash;
     private StringToGuid()
     {
     }
-    public static StringToGuid Instance{get;} = new StringToGuid();
+    public static StringToGuid Instance { get; } = new StringToGuid();
 
-    public async Task<Guid> GetGuidAsync(string value, CancellationToken cancellationToken)
+    public StringToGuid WithCustomHash(Func<byte[], byte[]> hashAlgorithm)
     {
-        await Task.Yield();
+        _customHash = hashAlgorithm;
+        return this;
+    }
+
+    public Guid GetGuid(string value)
+    {
+        _customHash ??= (buffer =>
+        {
+            using SHA256 mySHA256 = SHA256.Create();
+            byte[] hashed = mySHA256.ComputeHash(buffer);
+            return hashed;
+        });
+        
         
         if (string.IsNullOrEmpty(value))
         {
@@ -23,15 +36,9 @@ public sealed class StringToGuid
         }
 
 
-        using Stream input = new MemoryStream(Encoding.UTF8.GetBytes(value));
-        using SHA256 mySHA256 = SHA256.Create();
-
-    #if NET6_0_OR_GREATER
-        byte[] hashed = await mySHA256.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
-    #else
-        byte[] hashed = mySHA256.ComputeHash(input);
-    #endif
-
+        byte[] stringBytes = Encoding.UTF8.GetBytes(value);
+        byte[] hashed = _customHash(stringBytes);
+        
         // Truncate 32 bits to 16 bits.
         byte[] hashed16 = hashed.Take(16).ToArray();
         return new Guid(hashed16);
