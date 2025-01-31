@@ -7,8 +7,27 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <!-- NuGet Package -->
+  <PropertyGroup>
+    <PackageId>StringToGuid</PackageId>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
+    <VersionPrefix Condition=" '$(VersionPrefix)' == '' ">1.0.0</VersionPrefix>
+    <Authors>Saar CodeWithSaar</Authors>
+    <Company>codewithsaar.com</Company>
+    <PackageTags>String Guid Hash</PackageTags>
+    <Description>
+      Converts a string into a GUID.
+    </Description>
+    <Copyright>Copyright (c) Saar 2025.</Copyright>
+    <PackageProjectUrl>https://github.com/xiaomi7732/HashStringToGuid</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.IO.Hashing" Version="9.0.1" />
   </ItemGroup>
-
+  
+  <ItemGroup>
+    <None Include="../Readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>
