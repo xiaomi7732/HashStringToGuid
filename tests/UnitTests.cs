@@ -20,4 +20,22 @@ public class ConflictTest
         // All items are unique
         Assert.Equal(itemCount, deDupeCount);
     }
+
+    [Fact]
+    public void HashIsStable()
+    {
+        List<Func<string, byte[]>> hashes = [
+            HashAlgorithm.SHA256Hash,
+            HashAlgorithm.XxHash128,
+        ];
+
+        string sameInput = "a";
+
+        foreach (var alg in hashes)
+        {
+            byte[] a = alg.Invoke(sameInput);
+            byte[] b = alg.Invoke(sameInput);
+            Assert.Equal(a, b);
+        }
+    }
 }
