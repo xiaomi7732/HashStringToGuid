@@ -12,26 +12,12 @@ Guid guidValue = await StringToGuid.Instance.GetGuid(originalString);
 
 Running on a ThinkPad P50s, 3 times just make a point that the default **XxHash128** is pretty effective:
 
-Round #1
-
-| Method                | Mean        | Error     | StdDev    |
-|---------------------- |------------:|----------:|----------:|
-| GetGuidUsingSHA256    | 2,270.69 ns | 24.586 ns | 21.795 ns |
-| GetGuidUsingXxHash128 |    43.20 ns |  0.734 ns |  0.651 ns |
-
-Round #2
-
-| Method                | Mean        | Error     | StdDev    |
-|---------------------- |------------:|----------:|----------:|
-| GetGuidUsingSHA256    | 2,067.21 ns | 16.525 ns | 13.799 ns |
-| GetGuidUsingXxHash128 |    40.32 ns |  0.518 ns |  0.433 ns |
-
-Round #3
-
-| Method                | Mean        | Error     | StdDev    |
-|---------------------- |------------:|----------:|----------:|
-| GetGuidUsingSHA256    | 2,168.84 ns | 37.780 ns | 33.491 ns |
-| GetGuidUsingXxHash128 |    44.30 ns |  0.448 ns |  0.349 ns |
+| Method                | Mean        | Error     | StdDev     | Median      | Allocated |
+|---------------------- |------------:|----------:|-----------:|------------:|----------:|
+| GetGuidUsingXxHash128 |    65.38 ns |  2.250 ns |   6.309 ns |    63.84 ns |      80 B |
+| GetGuidUsingSHA256    | 3,104.90 ns | 73.492 ns | 206.081 ns | 3,060.30 ns |     288 B |
+| GetGuidUsingSHA1      | 2,979.74 ns | 88.966 ns | 255.259 ns | 2,905.02 ns |     272 B |
+| GetGuidUsingMD5       | 1,810.37 ns | 57.097 ns | 163.822 ns | 1,790.75 ns |     256 B |
 
 ## Customization if you really need it
 
